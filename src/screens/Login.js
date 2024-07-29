@@ -12,45 +12,88 @@ const LoginScreen = (props) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
+  const isValid = () => {
+    if (username.length === 0) {
+      console.warn("Please enter user name");
+      return false;
+    }
+    if (password.length === 0) {
+      console.warn("Please enter password");
+      return false;
+    }
+    return true;
+  }
+
+  const handleLogin = () => {
+    if (isValid()) {
+      props.navigation.navigate('Main');
+    }
+  };
+
   return (
 
-    <View>
+    <View style={styles.container}>
       <Image
         style={{ width: 150, height: 150, marginHorizontal: 100, marginVertical: 60 }}
         source={require('../assets/login.png')}
       ></Image>
-      <View style={{ flexDirection: 'row' }}>
-        <Text style={{ fontSize: 20, verticalAlign: "middle", flex: 0.3 }}> Username:</Text>
+      <View style={{ flexDirection: 'column' }}>
+        <Text style={{ fontSize: 20 }}> Enter Username:</Text>
         <TextInput
           placeholder='Enter User Name'
-          style={{ padding: 10, borderCurve: 5, borderWidth: 1, borderColor: "black", margin: 10, flex: 0.7 }}
+          style={styles.textFields}
           onChangeText={(text) => setUsername(text)}
         ></TextInput>
       </View>
-      <View style={{ flexDirection: 'row' }}>
-        <Text style={{ fontSize: 20, flex: 0.3, verticalAlign: "middle" }}> Password:</Text>
+      <View style={{ flexDirection: 'column' }}>
+        <Text style={{ fontSize: 20}}>Enter Password:</Text>
         <TextInput
           placeholder='Enter Password'
           secureTextEntry={true}
-          style={{ borderWidth: 1, borderColor: "black", margin: 10, flex: 0.7 }}
+          style={styles.textFields}
           onChangeText={(password) => setPassword(password)}
         ></TextInput>
       </View>
-      <TouchableOpacity onPress={() => props.navigation.navigate('Home')} style={{ width: '50%', height: 50, backgroundColor: 'powderblue', borderRadius: 20, alignSelf: 'center' }}>
+      <TouchableOpacity onPress={handleLogin} style={styles.button}>
         <View>
           <Text style={styles.text}>Login</Text>
         </View>
       </TouchableOpacity>
-
     </View>
 
   )
 }
 const styles = StyleSheet.create({
+  container: {
+    height: "75%",
+    width: "80%",
+    backgroundColor: "powderblue",
+    justifyContent: "center",
+    borderRadius: 20,
+    alignSelf: "center",
+    marginVertical: 100,
+
+
+  },
   text: {
-    color: 'black',
+    color: 'white',
     textAlign: 'center',
     marginTop: 15
+  },
+  button: {
+    width: '50%',
+    height: 50,
+    backgroundColor: 'black',
+    borderRadius: 20,
+    alignSelf: 'center',
+    marginBottom: 50
+  },
+  textFields: {
+    padding: 10,
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: "black",
+    margin: 10,
   }
 })
 

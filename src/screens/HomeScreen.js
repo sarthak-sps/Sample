@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, TouchableOpacity, FlatList, StyleSheet, Image } from 'react-native';
+import {addToCart} from './redux/action'
+import { useDispatch } from 'react-redux';
 
 const HomeScreen = (props) => {
     const [data, setData] = useState(undefined)
@@ -16,10 +18,17 @@ const HomeScreen = (props) => {
     const handlePress = (title, url) => {
         props.navigation.navigate('Detail', { title, url });
     };
+    const dispatch = useDispatch()
+
+    const handleAddToCart=(item)=>{
+        console.warn(item);
+        dispatch(addToCart(item))
+    }
 
     return (
         <View style={styles.container}>
             <FlatList
+                numColumns={2}
                 data={data}
                 renderItem={({ item }) => (
                     <TouchableOpacity onPress={() => handlePress(item.title, item.url)} style={styles.card}>
@@ -27,8 +36,12 @@ const HomeScreen = (props) => {
                             style={styles.image}
                             source={{ uri: item.url }}
                         />
-                        <Text style={styles.text}>{item.name}</Text>
+                        <TouchableOpacity onPress={()=>handleAddToCart(item)}>
+                            <Text style={styles.text}>Add To Cart</Text>
+                        </TouchableOpacity>
                     </TouchableOpacity>
+
+
                 )}
                 keyExtractor={item => item.id.toString()}
             >
@@ -44,24 +57,26 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     card: {
+        flex: 1,
         backgroundColor: "white",
         borderRadius: 8,
         overflow: "hidden",
-        marginBottom: 10,
         elevation: 3,
         shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 8,
+        margin: 10
     },
     image: {
-        width: '100%',
+        width: 200,
         height: 150,
     },
     text: {
         fontSize: 16,
         padding: 10,
         textAlign: 'center',
+        color: "black",
+        backgroundColor: 'steelblue'
     },
 });
 
